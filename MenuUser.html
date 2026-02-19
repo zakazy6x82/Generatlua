@@ -1,1 +1,1884 @@
-<!DOCTYPE html><html><head>    <meta charset="UTF-8">    <title>Генератор Шаблонов Lua Скриптов</title>    <style>                .function-input-group {    display: flex;    align-items: center;    margin-bottom: 12px;    gap: 8px;    padding: 8px;    background-color: #0a0a0a;    border-radius: 8px;    border: 1px solid #1a1a1a;}.function-input-group input {    flex-grow: 1;    padding: 10px 12px;    border-radius: 6px;    border: 1px solid #2a2a2a;    background-color: #000000;    color: #ffffff;    font-size: 14px;    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;    transition: all 0.2s ease;}.function-input-group input:focus {    outline: none;    border-color: #ffffff;    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);}.function-input-group button {    background-color: #000000;    color: #ffffff;    padding: 10px 16px;    font-size: 14px;    border-radius: 6px;    border: 1px solid #2a2a2a;    cursor: pointer;    transition: all 0.2s ease;    font-weight: 500;    min-width: 80px;    white-space: nowrap;}.function-input-group button:hover {    background-color: #1a1a1a;    border-color: #ffffff;}.add-function-button {    background-color: #000000;    color: #ffffff;    padding: 12px 20px;    margin-top: 12px;    margin-bottom: 24px;    border-radius: 8px;    border: 1px solid #2a2a2a;    font-size: 14px;    font-weight: 500;    cursor: pointer;    transition: all 0.2s ease;    width: 100%;    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;}.add-function-button:hover {    background-color: #1a1a1a;    border-color: #ffffff;}/* Дополнительные стили для контраста и читаемости */.function-input-group input::placeholder {    color: #666;    opacity: 1;}.function-input-group button:active,.add-function-button:active {    transform: translateY(1px);}/* Стили для фокуса на кнопках */.function-input-group button:focus,.add-function-button:focus {    outline: none;    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);}    .footer-info {    background-color: rgba(0, 0, 0, 0.85); /* Полупрозрачный черный фон */    color: #fff; /* Белый текст */    padding: 20px;    margin-top: 50px; /* Отступ сверху от основного контента */    text-align: center; /* Выравнивание текста по центру */    border-radius: 8px; /* Скругленные углы */    max-width: 800px; /* Такая же максимальная ширина, как у контейнера, если есть */    margin-left: auto; /* Центрируем блок */    margin-right: auto; /* Центрируем блок */}.footer-info h2 {    color: #00bfff; /* Красивый голубой цвет для заголовка, как у Телеграма */    margin-bottom: 15px;}.footer-info p {    margin-bottom: 5px;    font-size: 1.1em;}.footer-info a {    color: #00bfff; /* Голубой цвет для ссылки */    text-decoration: none; /* Убираем подчеркивание */}.footer-info a:hover {    text-decoration: underline; /* Подчеркиваниепри наведении */}/* Внутри твоего <style> тега, Бро! *//* Если "Сгенерированый код" это просто параграф или текст без конкретного id/класса,   но находится в контейнере, которому нужен светлый текст: */.container p { /* Это правило сделает весь текст в параграфах внутри .container светлым */    color: #eee; /* Очень светло-серый, почти белый */    text-align: center; /* Центрируем, если надо */    margin-bottom: 10px;}/* Для самого блока вывода кода (который сейчас "-- Готовый скрипт появится здесь") */#generatedCodeOutput {    color: #fff; /* Белый цвет текста */    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для читаемости */    padding: 15px;    border-radius: 5px;    white-space: pre-wrap;    word-break: break-all;    min-height: 100px;    border: 1px solid #00bfff; /* Голубая рамка, чтобы выделялось */    margin-top: 20px;    overflow-y: auto;}/* Внутри твоего <style> тега, Бро! */#generateButton,#copyButton {    background-color: #000; /* Черный фон */    color: #fff;            /* Белый текст */    border: 1px solid #00bfff; /* Голубая рамка */    padding: 10px 20px;    border-radius: 5px;    cursor: pointer;    font-size: 16px;    margin-top: 15px;    transition: background-color 0.3s ease, border-color 0.3s ease;    width: 100%; /* Чтобы кнопки растягивались на всю ширину */    box-sizing: border-box;    display: block; /* Важно: чтобы кнопки занимали всю строку */    text-align: center; /* Центрируем текст на кнопке */}#generateButton:hover,#copyButton:hover {    background-color: #00bfff; /* Голубой фон при наведении */    border-color: #007bff;}/* Если кнопка копирования должна быть скрыта по умолчанию */#copyButton {    display: none; /* Это у тебя уже есть в JS, но на всякий случай */}/* Также, убедись, что кнопка "ДОБАВИТЬ ФУНКЦИЮ" имеет те же стили или похожие */#addFunctionFieldButton {    background-color: #000;    color: #fff;    border: 1px solid #00bfff;    padding: 10px 20px;    border-radius: 5px;    cursor: pointer;    font-size: 16px;    margin-top: 15px;    width: 100%;    box-sizing: border-box;    display: block;    text-align: center;    transition: background-color 0.3s ease, border-color 0.3s ease;}#addFunctionFieldButton:hover {    background-color: #00bfff;    border-color: #007bff;}    body {     background-image: url('IMG_20260113_071227_808.jpg');      background-size: cover;     background-repeat: no-repeat;     background-attachment: fixed;     background-position: center center;    color: #fff;    font-family: Arial, sans-serif;    margin: 0;    padding: 20px;    </style><body>    <div class="container">        <h1> Генератор Шаблонов Lua Скриптов</h1>        <p>Нажмите кнопку ниже, чтобы сгенерировать готовый шаблон Lua скрипт.<br>Скопируйте полученный код и используйте в своих проектах!</p>        <!-- НОВЫЕ ЭЛЕМЕНТЫ ДЛЯ УПРАВЛЕНИЯ ФУНКЦИЯМИ -->        <div id="functionInputsContainer">            <!-- Здесь будут динамически добавляться поля для названий функций -->            <div class="function-input-group">                <input type="text" placeholder="Название функции 0" class="function-name-input">                <!-- <button class="remove-function-button">Удалить</button> -->                <!-- Первая функция пусть всегда будет без кнопки "Удалить" -->            </div>        </div>        <button id="addFunctionFieldButton" class="add-function-button">ДОБАВИТЬ ФУНКЦИЮ</button>        <!-- КОНЕЦ НОВЫХ ЭЛЕМЕНТОВ -->        <button id="generateButton">СГЕНЕРИРОВАТЬ СКРИПТ</button>        <div class="code-output-wrapper">            <span style="font-size: 0.8em; color: #888; display: block; margin-bottom: 5px;">📄 Сгенерированный код:</span>            <pre class="code-output" id="generatedCodeOutput">-- Готовый скрипт появится здесь            </pre>            <button class="copy-button" id="copyButton">КОПИРОВАТЬ</button>        </div>    </div>        <div class="footer-info">        <h2>О разработчике</h2>        <p>Создатель: <span style="color: #00bfff;">ZAKAZY</span></p>        <p>Telegram: <a href="https://t.me/Bio_zakazy" target="_blank" style="color: #00bfff; text-decoration: none;">Chanell</a></p>        <p>На связи с <span style="color: #fff;">@Speczakazy_Robot</span></p>    </div>             <script>    // Получаем ссылки на элементы страницы    const generateButton = document.getElementById('generateButton');    const generatedCodeOutput = document.getElementById('generatedCodeOutput');    const copyButton = document.getElementById('copyButton');    const functionInputsContainer = document.getElementById('functionInputsContainer'); // Контейнер для полей ввода функций    const addFunctionFieldButton = document.getElementById('addFunctionFieldButton'); // Кнопка добавления поля    let functionCounter = 0; // Счетчик для нумерации функций (начинаем с 0, чтобы первая функция была "1")    // --- Функция для добавления нового поля ввода функции ---    function addFunctionField() {        functionCounter++; // Увеличиваем счетчик для новой функции (теперь будет 1, 2, 3...)        const inputGroup = document.createElement('div');        inputGroup.className = 'function-input-group'; // Применяем стили        const input = document.createElement('input');        input.type = 'text';        input.placeholder = `Название функции ${functionCounter}`; // Обратные кавычки        input.className = 'function-name-input'; // Для легкого доступа при генерации        const removeButton = document.createElement('button');        removeButton.textContent = 'Удалить';        removeButton.className = 'remove-function-button'; // Применяем стили для красной кнопки        removeButton.addEventListener('click', () => {            inputGroup.remove(); // Удаляем всю группу полей.            // Примечание: functionCounter здесь не уменьшается, он просто показывает порядковый номер добавляемых полей.        });        inputGroup.appendChild(input);        inputGroup.appendChild(removeButton);        functionInputsContainer.appendChild(inputGroup);    }    // --- Функция для генерации скрипта на основе введенных функций ---    function generateLuaScript() {        let luaFunctionsCode = '';        const functionNames = [];        const inputs = document.querySelectorAll('.function-name-input');        inputs.forEach(input => {            let funcName = input.value.trim();            // Очищаем имя функции от недопустимых символов и делаем его валидным Lua-именем            // Заменяем любые символы, кроме букв, цифр и подчеркиваний, на пустоту            funcName = funcName.replace(/[^a-zA-Z0-9_]/g, '');            // Если имя начинается с цифры, добавляем префикс "func_"            if (funcName.match(/^[0-9]/)) {                funcName = 'func_' + funcName;            }            // Если имя стало пустым после очистки            if (funcName === '' || funcName.length < 2) { // Добавил проверку на минимальную длину, чтобы не было "f"                funcName = 'default_func_' + (functionNames.length + 1); // Даем дефолтное имя            }            if (funcName) {                // Добавляем проверку на дубликаты, чтобы не было одинаковых имен функций                if (!functionNames.includes(funcName)) {                    functionNames.push(funcName);                    luaFunctionsCode += `function ${funcName}()    gg.alert('Удалите этот Алерт и вставьте свой код для функции "${funcName}"')end`;                } else {                    // Если имя функции уже существует, можно добавить к нему номер                    let uniqueFuncName = funcName;                    let counter = 1;                    while (functionNames.includes(uniqueFuncName)) {                        uniqueFuncName = funcName + '_' + counter;                        counter++;                    }                    functionNames.push(uniqueFuncName);                    luaFunctionsCode += `function ${uniqueFuncName}()    gg.alert('Удалите этот Алерт и вставьте свой код для функции "${uniqueFuncName}" (было "${funcName}")')end`;                }            }        });        let menuChoices = '';        let menuIfs = '';        functionNames.forEach((name, index) => {            menuChoices += `        "${name}",\n`; // Пункты меню в кавычках            menuIfs += `    if mine == ${index + 1} then ${name}() end\n`; // Условия выбора        });        // Убираем последнюю запятую из menuChoices, если она есть        if (menuChoices.length > 0) {            menuChoices = menuChoices.slice(0, -2); // Убираем ", \n"        } else {            menuChoices = '        "Нет функций"'; // Если функций нет, чтобы меню не было пустым        }        const luaTemplate = `-- Генератор Lua-скриптов-- Сгенерировано ${new Date().toLocaleString()}gg.alert('Script by zakazy')gg.sleep('100')ByZakazy = 1function menu()    ByZakazy = 0    local mine = gg.choice({${menuChoices}    }, nil, "Меню [ByZakazy]") -- "Меню [ByZakazy]" - это название меню${menuIfs}end-- Динамически сгенерированные функции${luaFunctionsCode}-- Основной цикл для управления менюwhile true do    if gg.isVisible(true) then        ByZakazy = 1        gg.setVisible(false)    end    if ByZakazy == 1 then menu() end    gg.sleep(200) -- Добавляем небольшой sleep, чтобы не жрало CPUend-- Здесь ты можешь добавить глобальные настройки или другие хуки-- Например:-- local settings = {--    aimbot_enabled = false,--    wallhack_distance = 100-- }`;        generatedCodeOutput.textContent = luaTemplate;        copyButton.style.display = 'block';    }    // --- Функция для копирования кода в буфер обмена ---    function copyCodeToClipboard() {        const textarea = document.createElement('textarea');        textarea.value = generatedCodeOutput.textContent;        document.body.appendChild(textarea);        textarea.select();        document.execCommand('copy');        document.body.removeChild(textarea);        const originalButtonText = copyButton.textContent;        copyButton.textContent = 'СКОПИРОВАНО!';        setTimeout(() => {            copyButton.textContent = originalButtonText;        }, 2000);    }    // --- Привязываем обработчики событий к кнопкам ---    addFunctionFieldButton.addEventListener('click', addFunctionField);    generateButton.addEventListener('click', generateLuaScript);    copyButton.addEventListener('click', copyCodeToClipboard);    // Добавляем одно начальное поле при загрузке страницы, чтобы юзеру не было пусто.    addFunctionField();    </script></body></html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор Шаблонов Lua Скриптов</title>
+    <style>
+        .function-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 8px;
+            padding: 8px;
+            background-color: #0a0a0a;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+        }
+
+        .function-input-group input {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #2a2a2a;
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .function-input-group input:focus {
+            outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .function-input-group button {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #2a2a2a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            min-width: 80px;
+            white-space: nowrap;
+        }
+
+        .function-input-group button:hover {
+            background-color: #1a1a1a;
+            border-color: #ffffff;
+        }
+
+        .add-function-button {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 12px 20px;
+            margin-top: 12px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            border: 1px solid #2a2a2a;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .add-function-button:hover {
+            background-color: #1a1a1a;
+            border-color: #ffffff;
+        }
+
+        .footer-info {
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+            text-align: center;
+            border-radius: 8px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-info h2 {
+            color: #00bfff;
+            margin-bottom: 15px;
+        }
+
+        .footer-info p {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .footer-info a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer-info a:hover {
+            text-decoration: underline;
+        }
+
+        .container p {
+            color: #eee;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #generatedCodeOutput {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            min-height: 100px;
+            border: 1px solid #00bfff;
+            margin-top: 20px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        #generateButton,
+        #copyButton {
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #00bfff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            display: block;
+            text-align: center;
+        }
+
+        #generateButton:hover,
+        #copyButton:hover {
+            background-color: #00bfff;
+            border-color: #007bff;
+        }
+
+        #copyButton {
+            display: none;
+        }
+
+        body {
+            background-image: url('IMG_20260113_071227_808.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Стили для разделов */
+        .section-container {
+            background-color: rgba(10, 10, 10, 0.9);
+            border: 1px solid #00bfff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .section-name-input {
+            flex-grow: 1;
+            padding: 12px;
+            background-color: #000;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .section-name-input:focus {
+            border-color: #00bfff;
+            outline: none;
+        }
+
+        .remove-section-button {
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .remove-section-button:hover {
+            background-color: #ff0000;
+        }
+
+        .functions-in-section {
+            margin-left: 20px;
+        }
+
+        .add-section-button {
+            background-color: #00bfff;
+            color: #000;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .add-section-button:hover {
+            background-color: #0099ff;
+            transform: translateY(-2px);
+        }
+
+        /* Стили для переключателя */
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50px;
+            border: 1px solid #00bfff;
+        }
+
+        .mode-option {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .mode-option input[type="radio"] {
+            display: none;
+        }
+
+        .mode-option label {
+            display: block;
+            padding: 15px 25px;
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 40px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .mode-option input[type="radio"]:checked + label {
+            background-color: #00bfff;
+            color: #000;
+            border-color: #00bfff;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+        }
+
+        .mode-option label:hover {
+            border-color: #00bfff;
+            transform: scale(1.05);
+        }
+
+        /* Контейнеры для разных режимов */
+        .simple-mode-container,
+        .advanced-mode-container {
+            transition: all 0.3s ease;
+        }
+
+        .hidden-mode {
+            display: none !important;
+        }
+
+        .mode-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #00bfff;
+            color: #000;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Стили для счётчика посещений */
+        .visit-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00bfff;
+            border-radius: 50px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .visit-counter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
+        }
+
+        .visitor-icon {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .visitor-stats {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .visitor-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00bfff;
+            line-height: 1;
+        }
+
+        .visitor-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .visit-animation {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: rgba(0, 191, 255, 0.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Стили для информационной панели */
+        .visitor-info-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00bfff;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            display: none;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .visitor-info-panel.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-panel-title {
+            color: #00bfff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .info-panel-content {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .info-label {
+            color: #888;
+        }
+
+        .info-value {
+            color: #00bfff;
+            font-weight: bold;
+        }
+
+        .panel-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .panel-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .reset-visit-btn {
+            background-color: #ff3333;
+            color: white;
+        }
+
+        .reset-visit-btn:hover {
+            background-color: #ff0000;
+        }
+
+        .logs-btn {
+            background-color: #00bfff;
+            color: #000;
+        }
+
+        .logs-btn:hover {
+            background-color: #0099ff;
+        }
+
+        /* Стили для логов */
+        .logs-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 340px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00bfff;
+            border-radius: 15px;
+            padding: 20px;
+            width: 350px;
+            display: none;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .logs-panel.show {
+            display: block;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .logs-title {
+            color: #00bfff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .logs-close {
+            color: #888;
+            cursor: pointer;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .logs-close:hover {
+            color: #fff;
+        }
+
+        .logs-stats {
+            background-color: rgba(0, 191, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stats-number {
+            color: #00bfff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stats-label {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .logs-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00bfff;
+            transition: all 0.3s;
+        }
+
+        .log-entry:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .log-time {
+            color: #00bfff;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .log-device {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .device-icon {
+            font-size: 16px;
+        }
+
+        .device-name {
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .log-details {
+            color: #888;
+            font-size: 11px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid #333;
+        }
+
+        .log-detail {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .clear-logs-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 15px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .clear-logs-btn:hover {
+            background-color: #444;
+        }
+
+        /* Модальное окно с паролем */
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .password-modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .password-modal-content {
+            background-color: #0a0a0a;
+            border: 2px solid #00bfff;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 50px rgba(0, 191, 255, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .password-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .password-modal-header h3 {
+            color: #00bfff;
+            font-size: 24px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .password-modal-header .lock-icon {
+            font-size: 28px;
+        }
+
+        .password-input-group {
+            margin-bottom: 20px;
+        }
+
+        .password-input-group label {
+            display: block;
+            color: #888;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 15px;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
+        .password-input-group input:focus {
+            border-color: #00bfff;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #ff3333;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .password-hint {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .password-modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .password-modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .password-confirm-btn {
+            background-color: #00bfff;
+            color: #000;
+        }
+
+        .password-confirm-btn:hover {
+            background-color: #0099ff;
+            transform: scale(1.02);
+        }
+
+        .password-cancel-btn {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .password-cancel-btn:hover {
+            background-color: #444;
+        }
+
+        .password-error-message {
+            color: #ff3333;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .password-error-message.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .attempts-counter {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .attempts-counter span {
+            color: #ff3333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Генератор Шаблонов Lua Скриптов</h1>
+        <p>Выбери режим работы и создай свой идеальный скрипт!</p>
+
+        <!-- ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМОВ -->
+        <div class="mode-selector">
+            <div class="mode-option">
+                <input type="radio" name="scriptMode" id="simpleMode" value="simple" checked>
+                <label for="simpleMode">📋 Простой режим</label>
+            </div>
+            <div class="mode-option">
+                <input type="radio" name="scriptMode" id="advancedMode" value="advanced">
+                <label for="advancedMode">📁 С разделами</label>
+            </div>
+        </div>
+
+        <!-- ПРОСТОЙ РЕЖИМ -->
+        <div id="simpleModeContainer" class="simple-mode-container">
+            <h2>Простой режим <span class="mode-badge">список функций</span></h2>
+            <div id="simpleFunctionInputsContainer">
+                <!-- Здесь будут поля для функций простого режима -->
+            </div>
+            <button id="simpleAddFunctionButton" class="add-function-button">➕ ДОБАВИТЬ ФУНКЦИЮ</button>
+        </div>
+
+        <!-- ПРОДВИНУТЫЙ РЕЖИМ -->
+        <div id="advancedModeContainer" class="advanced-mode-container hidden-mode">
+            <h2>Режим с разделами <span class="mode-badge">категории и функции</span></h2>
+            <div id="sectionsContainer">
+                <!-- Первый раздел добавится автоматически -->
+            </div>
+            <button id="addSectionButton" class="add-section-button">➕ ДОБАВИТЬ НОВЫЙ РАЗДЕЛ</button>
+        </div>
+
+        <button id="generateButton">🚀 СГЕНЕРИРОВАТЬ СКРИПТ</button>
+
+        <div class="code-output-wrapper">
+            <span style="font-size: 0.8em; color: #888; display: block; margin-bottom: 5px;">📄 Сгенерированный код:</span>
+            <pre class="code-output" id="generatedCodeOutput">
+-- Готовый скрипт появится здесь
+            </pre>
+            <button class="copy-button" id="copyButton">📋 КОПИРОВАТЬ</button>
+        </div>
+    </div>
+
+    <!-- СЧЁТЧИК ПОСЕЩЕНИЙ -->
+    <div class="visit-counter" id="visitCounter">
+        <span class="visitor-icon">👤</span>
+        <div class="visitor-stats">
+            <span class="visitor-count" id="visitorCount">0</span>
+            <span class="visitor-label">посетителей</span>
+        </div>
+    </div>
+
+    <!-- ИНФОРМАЦИОННАЯ ПАНЕЛЬ -->
+    <div class="visitor-info-panel" id="visitorInfoPanel">
+        <div class="info-panel-title">📊 Статистика посещений</div>
+        <div class="info-panel-content">
+            <div class="info-item">
+                <span class="info-label">Всего визитов:</span>
+                <span class="info-value" id="totalVisits">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Сегодня:</span>
+                <span class="info-value" id="todayVisits">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">На этой неделе:</span>
+                <span class="info-value" id="weekVisits">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">В этом месяце:</span>
+                <span class="info-value" id="monthVisits">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Последний визит:</span>
+                <span class="info-value" id="lastVisit">никогда</span>
+            </div>
+            <div class="panel-buttons">
+                <button class="panel-btn reset-visit-btn" id="resetVisitBtn">🔄 Сброс</button>
+                <button class="panel-btn logs-btn" id="showLogsBtn">📋 Админ панель</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПАНЕЛЬ ЛОГОВ -->
+    <div class="logs-panel" id="logsPanel">
+        <div class="logs-header">
+            <span class="logs-title">📱 Логи устройств</span>
+            <span class="logs-close" id="closeLogsBtn">✕</span>
+        </div>
+        
+        <div class="logs-stats" id="logsStats">
+            <span class="stats-number" id="uniqueDevicesCount">0</span>
+            <span class="stats-label">уникальных устройств</span>
+        </div>
+
+        <div class="logs-list" id="logsList">
+            <!-- Здесь будут логи -->
+        </div>
+
+        <button class="clear-logs-btn" id="clearLogsBtn">🗑 Очистить логи</button>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО С ПАРОЛЕМ (ДЛЯ СБРОСА) -->
+    <div class="password-modal" id="resetPasswordModal">
+        <div class="password-modal-content">
+            <div class="password-modal-header">
+                <h3>
+                    <span class="lock-icon">🔒</span>
+                    Сброс статистики
+                </h3>
+            </div>
+            
+            <div class="password-input-group">
+                <label>Введите пароль для сброса:</label>
+                <input type="password" id="resetPasswordInput" placeholder="••••••••" maxlength="20">
+                <div class="password-hint">Вход в админ панель защищен</div>
+            </div>
+
+            <div class="password-error-message" id="resetPasswordError">
+                ❌ Неверный пароль! Попробуйте снова.
+            </div>
+
+            <div class="attempts-counter" id="resetAttemptsCounter">
+                Осталось попыток: <span id="resetAttemptsLeft">3</span>
+            </div>
+
+            <div class="password-modal-buttons">
+                <button class="password-cancel-btn" id="resetPasswordCancelBtn">Отмена</button>
+                <button class="password-confirm-btn" id="resetPasswordConfirmBtn">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО С ПАРОЛЕМ (ДЛЯ ЛОГОВ) -->
+    <div class="password-modal" id="logsPasswordModal">
+        <div class="password-modal-content">
+            <div class="password-modal-header">
+                <h3>
+                    <span class="lock-icon">🔒</span>
+                    Просмотр логов
+                </h3>
+            </div>
+            
+            <div class="password-input-group">
+                <label>Введите пароль для просмотра логов:</label>
+                <input type="password" id="logsPasswordInput" placeholder="••••••••" maxlength="20">
+                <div class="password-hint">Вход в админ панель защищен</div>
+            </div>
+
+            <div class="password-error-message" id="logsPasswordError">
+                ❌ Неверный пароль! Попробуйте снова.
+            </div>
+
+            <div class="attempts-counter" id="logsAttemptsCounter">
+                Осталось попыток: <span id="logsAttemptsLeft">3</span>
+            </div>
+
+            <div class="password-modal-buttons">
+                <button class="password-cancel-btn" id="logsPasswordCancelBtn">Отмена</button>
+                <button class="password-confirm-btn" id="logsPasswordConfirmBtn">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        <h2>О разработчике</h2>
+        <p>Создатель: <span style="color: #00bfff;">Comback [Ru 🇷🇺]</span></p>
+        <p>Telegram: <a href="https://t.me/Bio_zakazy" target="_blank" style="color: #00bfff; text-decoration: none;">Channel</a></p>
+        <p>Telegram: <a href="http://t.me/milfcoder" target="_blank" style="color: #00bfff; text-decoration: none;">Admin</a></p>
+    </div>
+
+    <script>
+        // Получаем ссылки на элементы
+        const generateButton = document.getElementById('generateButton');
+        const generatedCodeOutput = document.getElementById('generatedCodeOutput');
+        const copyButton = document.getElementById('copyButton');
+        
+        // Элементы для переключения режимов
+        const simpleModeRadio = document.getElementById('simpleMode');
+        const advancedModeRadio = document.getElementById('advancedMode');
+        const simpleModeContainer = document.getElementById('simpleModeContainer');
+        const advancedModeContainer = document.getElementById('advancedModeContainer');
+        
+        // Элементы простого режима
+        const simpleFunctionContainer = document.getElementById('simpleFunctionInputsContainer');
+        const simpleAddButton = document.getElementById('simpleAddFunctionButton');
+        
+        // Элементы продвинутого режима
+        const sectionsContainer = document.getElementById('sectionsContainer');
+        const addSectionButton = document.getElementById('addSectionButton');
+
+        // Элементы счётчика
+        const visitCounter = document.getElementById('visitCounter');
+        const visitorInfoPanel = document.getElementById('visitorInfoPanel');
+        const visitorCountEl = document.getElementById('visitorCount');
+        const totalVisitsEl = document.getElementById('totalVisits');
+        const todayVisitsEl = document.getElementById('todayVisits');
+        const weekVisitsEl = document.getElementById('weekVisits');
+        const monthVisitsEl = document.getElementById('monthVisits');
+        const lastVisitEl = document.getElementById('lastVisit');
+        const resetVisitBtn = document.getElementById('resetVisitBtn');
+        const showLogsBtn = document.getElementById('showLogsBtn');
+
+        // Элементы логов
+        const logsPanel = document.getElementById('logsPanel');
+        const closeLogsBtn = document.getElementById('closeLogsBtn');
+        const logsList = document.getElementById('logsList');
+        const uniqueDevicesCount = document.getElementById('uniqueDevicesCount');
+        const clearLogsBtn = document.getElementById('clearLogsBtn');
+
+        // Элементы модального окна для сброса
+        const resetPasswordModal = document.getElementById('resetPasswordModal');
+        const resetPasswordInput = document.getElementById('resetPasswordInput');
+        const resetPasswordConfirmBtn = document.getElementById('resetPasswordConfirmBtn');
+        const resetPasswordCancelBtn = document.getElementById('resetPasswordCancelBtn');
+        const resetPasswordError = document.getElementById('resetPasswordError');
+        const resetAttemptsCounter = document.getElementById('resetAttemptsCounter');
+        const resetAttemptsLeftSpan = document.getElementById('resetAttemptsLeft');
+
+        // Элементы модального окна для логов
+        const logsPasswordModal = document.getElementById('logsPasswordModal');
+        const logsPasswordInput = document.getElementById('logsPasswordInput');
+        const logsPasswordConfirmBtn = document.getElementById('logsPasswordConfirmBtn');
+        const logsPasswordCancelBtn = document.getElementById('logsPasswordCancelBtn');
+        const logsPasswordError = document.getElementById('logsPasswordError');
+        const logsAttemptsCounter = document.getElementById('logsAttemptsCounter');
+        const logsAttemptsLeftSpan = document.getElementById('logsAttemptsLeft');
+
+        // Счетчики
+        let simpleFunctionCounter = 0;
+        let sectionCounter = 0;
+        let globalFunctionCounter = 0;
+
+        // Переменные для системы пароля
+        const CORRECT_PASSWORD = "Y4x5JoBsvCrkLom6"; // Пароль: 27 ноября (день рождения)
+        let resetAttemptsRemaining = 3;
+        let logsAttemptsRemaining = 3;
+
+        // --- ФУНКЦИЯ ОПРЕДЕЛЕНИЯ УСТРОЙСТВА ---
+        function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            let device = "Неизвестное устройство";
+            let deviceIcon = "📱";
+            let os = "Неизвестная ОС";
+            let browser = "Неизвестный браузер";
+
+            // Определяем устройство
+            if (/iPhone|iPad|iPod/i.test(ua)) {
+                device = "Apple iPhone/iPad";
+                deviceIcon = "🍎";
+                os = "iOS";
+            } else if (/Android/i.test(ua)) {
+                device = "Android устройство";
+                deviceIcon = "🤖";
+                os = "Android";
+                
+                // Пытаемся определить модель Android
+                const match = ua.match(/Android\s([0-9.]+)/);
+                if (match) {
+                    os = `Android ${match[1]}`;
+                }
+                
+                // Пытаемся определить модель телефона
+                const modelMatch = ua.match(/; ([\w\s]+) Build/);
+                if (modelMatch) {
+                    device = modelMatch[1].trim() || "Android устройство";
+                }
+            } else if (/Windows/i.test(ua)) {
+                device = "Windows ПК";
+                deviceIcon = "💻";
+                os = "Windows";
+            } else if (/Mac/i.test(ua)) {
+                device = "Mac";
+                deviceIcon = "💻";
+                os = "macOS";
+            } else if (/Linux/i.test(ua)) {
+                device = "Linux";
+                deviceIcon = "🐧";
+                os = "Linux";
+            }
+
+            // Определяем браузер
+            if (/Chrome/i.test(ua) && !/Edg/i.test(ua)) {
+                browser = "Chrome";
+            } else if (/Firefox/i.test(ua)) {
+                browser = "Firefox";
+            } else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {
+                browser = "Safari";
+            } else if (/Edg/i.test(ua)) {
+                browser = "Edge";
+            } else if (/Opera|OPR/i.test(ua)) {
+                browser = "Opera";
+            }
+
+            // Определяем экран
+            const screenSize = `${window.screen.width}x${window.screen.height}`;
+            
+            // Определяем язык
+            const language = navigator.language || navigator.userLanguage || "неизвестно";
+
+            return {
+                fullUA: ua,
+                device: device,
+                deviceIcon: deviceIcon,
+                os: os,
+                browser: browser,
+                screenSize: screenSize,
+                language: language,
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        // --- СИСТЕМА ЛОГИРОВАНИЯ ---
+        function saveDeviceLog() {
+            const deviceInfo = getDeviceInfo();
+            let logs = JSON.parse(localStorage.getItem('deviceLogs') || '[]');
+            
+            // Добавляем новый лог
+            logs.push({
+                ...deviceInfo,
+                id: Date.now(),
+                visitNumber: logs.length + 1
+            });
+
+            // Ограничим количество логов до 50 последних
+            if (logs.length > 50) {
+                logs = logs.slice(-50);
+            }
+
+            localStorage.setItem('deviceLogs', JSON.stringify(logs));
+            updateLogsDisplay();
+        }
+
+        function updateLogsDisplay() {
+            const logs = JSON.parse(localStorage.getItem('deviceLogs') || '[]');
+            
+            // Обновляем счётчик уникальных устройств
+            const uniqueDevices = new Set(logs.map(log => log.device + log.os)).size;
+            uniqueDevicesCount.textContent = uniqueDevices;
+
+            // Очищаем список
+            logsList.innerHTML = '';
+
+            if (logs.length === 0) {
+                logsList.innerHTML = '<div style="text-align: center; color: #888; padding: 20px;">📭 Логов пока нет</div>';
+                return;
+            }
+
+            // Показываем логи в обратном порядке (сначала новые)
+            logs.reverse().forEach(log => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+
+                const date = new Date(log.timestamp);
+                const timeStr = date.toLocaleString();
+
+                logEntry.innerHTML = `
+                    <div class="log-time">🕐 ${timeStr}</div>
+                    <div class="log-device">
+                        <span class="device-icon">${log.deviceIcon}</span>
+                        <span class="device-name">${log.device}</span>
+                    </div>
+                    <div class="log-details">
+                        <span class="log-detail">📱 ${log.os}</span>
+                        <span class="log-detail">🌐 ${log.browser}</span>
+                        <span class="log-detail">📺 ${log.screenSize}</span>
+                        <span class="log-detail">🌍 ${log.language}</span>
+                    </div>
+                `;
+
+                logsList.appendChild(logEntry);
+            });
+        }
+
+        function clearLogs() {
+            if (confirm('Очистить все логи устройств?')) {
+                localStorage.removeItem('deviceLogs');
+                updateLogsDisplay();
+            }
+        }
+
+        // --- СИСТЕМА ПАРОЛЯ ДЛЯ СБРОСА СТАТИСТИКИ ---
+        function showResetPasswordModal() {
+            // Сбрасываем состояние
+            resetPasswordInput.value = '';
+            resetPasswordError.classList.remove('show');
+            resetAttemptsRemaining = 3;
+            resetAttemptsLeftSpan.textContent = resetAttemptsRemaining;
+            resetAttemptsCounter.style.display = 'block';
+            resetPasswordInput.classList.remove('error');
+            
+            // Показываем модальное окно
+            resetPasswordModal.classList.add('show');
+            resetPasswordInput.focus();
+        }
+
+        function hideResetPasswordModal() {
+            resetPasswordModal.classList.remove('show');
+        }
+
+        function checkResetPassword() {
+            const enteredPassword = resetPasswordInput.value.trim();
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // Правильный пароль
+                resetPasswordError.classList.remove('show');
+                hideResetPasswordModal();
+                
+                // Второе подтверждение через confirm
+                if (confirm('Сбросить всю статистику посещений?')) {
+                    resetVisitStats();
+                }
+            } else {
+                // Неправильный пароль
+                resetAttemptsRemaining--;
+                resetAttemptsLeftSpan.textContent = resetAttemptsRemaining;
+                
+                resetPasswordInput.classList.add('error');
+                resetPasswordError.classList.add('show');
+                
+                // Вибрация для мобильных (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+                
+                if (resetAttemptsRemaining <= 0) {
+                    // Слишком много попыток
+                    alert('❌ Слишком много неверных попыток!');
+                    hideResetPasswordModal();
+                    
+                    // Блокируем кнопку сброса на 30 секунд
+                    resetVisitBtn.disabled = true;
+                    resetVisitBtn.style.opacity = '0.5';
+                    resetVisitBtn.style.cursor = 'not-allowed';
+                    
+                    setTimeout(() => {
+                        resetVisitBtn.disabled = false;
+                        resetVisitBtn.style.opacity = '1';
+                        resetVisitBtn.style.cursor = 'pointer';
+                    }, 30000);
+                }
+                
+                // Убираем класс ошибки через 500ms
+                setTimeout(() => {
+                    resetPasswordInput.classList.remove('error');
+                }, 500);
+            }
+        }
+
+        // --- СИСТЕМА ПАРОЛЯ ДЛЯ ПРОСМОТРА ЛОГОВ ---
+        function showLogsPasswordModal() {
+            // Сбрасываем состояние
+            logsPasswordInput.value = '';
+            logsPasswordError.classList.remove('show');
+            logsAttemptsRemaining = 3;
+            logsAttemptsLeftSpan.textContent = logsAttemptsRemaining;
+            logsAttemptsCounter.style.display = 'block';
+            logsPasswordInput.classList.remove('error');
+            
+            // Показываем модальное окно
+            logsPasswordModal.classList.add('show');
+            logsPasswordInput.focus();
+        }
+
+        function hideLogsPasswordModal() {
+            logsPasswordModal.classList.remove('show');
+        }
+
+        function checkLogsPassword() {
+            const enteredPassword = logsPasswordInput.value.trim();
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // Правильный пароль
+                logsPasswordError.classList.remove('show');
+                hideLogsPasswordModal();
+                
+                // Показываем логи
+                logsPanel.classList.add('show');
+                updateLogsDisplay();
+            } else {
+                // Неправильный пароль
+                logsAttemptsRemaining--;
+                logsAttemptsLeftSpan.textContent = logsAttemptsRemaining;
+                
+                logsPasswordInput.classList.add('error');
+                logsPasswordError.classList.add('show');
+                
+                // Вибрация для мобильных (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+                
+                if (logsAttemptsRemaining <= 0) {
+                    // Слишком много попыток
+                    alert('❌ Слишком много неверных попыток!');
+                    hideLogsPasswordModal();
+                    
+                    // Блокируем кнопку логов на 30 секунд
+                    showLogsBtn.disabled = true;
+                    showLogsBtn.style.opacity = '0.5';
+                    showLogsBtn.style.cursor = 'not-allowed';
+                    
+                    setTimeout(() => {
+                        showLogsBtn.disabled = false;
+                        showLogsBtn.style.opacity = '1';
+                        showLogsBtn.style.cursor = 'pointer';
+                    }, 30000);
+                }
+                
+                // Убираем класс ошибки через 500ms
+                setTimeout(() => {
+                    logsPasswordInput.classList.remove('error');
+                }, 500);
+            }
+        }
+
+        // --- СИСТЕМА ПОСЕЩЕНИЙ ---
+        function initVisitCounter() {
+            // Получаем данные из localStorage или создаём новые
+            let visitData = localStorage.getItem('visitorStats');
+            
+            if (!visitData) {
+                visitData = {
+                    totalVisits: 0,
+                    visitsByDate: {},
+                    firstVisit: new Date().toISOString(),
+                    lastVisit: null
+                };
+            } else {
+                visitData = JSON.parse(visitData);
+            }
+
+            // Обновляем статистику
+            const now = new Date();
+            const today = now.toDateString();
+            
+            // Увеличиваем счётчик
+            visitData.totalVisits = (visitData.totalVisits || 0) + 1;
+            
+            // Обновляем visitsByDate
+            if (!visitData.visitsByDate) {
+                visitData.visitsByDate = {};
+            }
+            visitData.visitsByDate[today] = (visitData.visitsByDate[today] || 0) + 1;
+            
+            // Сохраняем дату последнего визита
+            visitData.lastVisit = now.toISOString();
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('visitorStats', JSON.stringify(visitData));
+            
+            // Обновляем отображение
+            updateVisitDisplay(visitData);
+            
+            // Добавляем анимацию
+            visitCounter.classList.add('visit-animation');
+            setTimeout(() => {
+                visitCounter.classList.remove('visit-animation');
+            }, 500);
+
+            // Сохраняем лог устройства
+            saveDeviceLog();
+        }
+
+        function updateVisitDisplay(visitData) {
+            // Обновляем основной счётчик
+            visitorCountEl.textContent = visitData.totalVisits || 0;
+            
+            // Обновляем детальную информацию
+            totalVisitsEl.textContent = visitData.totalVisits || 0;
+            
+            const now = new Date();
+            const today = now.toDateString();
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            
+            // Считаем визиты за сегодня
+            let todayCount = 0;
+            let weekCount = 0;
+            let monthCount = 0;
+            
+            if (visitData.visitsByDate) {
+                Object.entries(visitData.visitsByDate).forEach(([date, count]) => {
+                    const visitDate = new Date(date);
+                    
+                    if (date === today) {
+                        todayCount += count;
+                    }
+                    
+                    if (visitDate >= weekAgo) {
+                        weekCount += count;
+                    }
+                    
+                    if (visitDate >= monthAgo) {
+                        monthCount += count;
+                    }
+                });
+            }
+            
+            todayVisitsEl.textContent = todayCount;
+            weekVisitsEl.textContent = weekCount;
+            monthVisitsEl.textContent = monthCount;
+            
+            // Форматируем дату последнего визита
+            if (visitData.lastVisit) {
+                const lastDate = new Date(visitData.lastVisit);
+                lastVisitEl.textContent = lastDate.toLocaleString();
+            } else {
+                lastVisitEl.textContent = 'никогда';
+            }
+        }
+
+        function resetVisitStats() {
+            const newVisitData = {
+                totalVisits: 0,
+                visitsByDate: {},
+                firstVisit: new Date().toISOString(),
+                lastVisit: null
+            };
+            localStorage.setItem('visitorStats', JSON.stringify(newVisitData));
+            updateVisitDisplay(newVisitData);
+            
+            // Анимация сброса
+            visitorCountEl.textContent = '0';
+            visitCounter.classList.add('visit-animation');
+            setTimeout(() => {
+                visitCounter.classList.remove('visit-animation');
+            }, 500);
+        }
+
+        // --- ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ ПАНЕЛЕЙ ---
+        // Клик по счётчику показывает/скрывает панель статистики
+        visitCounter.addEventListener('click', () => {
+            visitorInfoPanel.classList.toggle('show');
+            // Скрываем логи, если они открыты
+            logsPanel.classList.remove('show');
+        });
+
+        // Показать логи (с запросом пароля)
+        showLogsBtn.addEventListener('click', () => {
+            showLogsPasswordModal();
+        });
+
+        // Закрыть логи
+        closeLogsBtn.addEventListener('click', () => {
+            logsPanel.classList.remove('show');
+        });
+
+        // Очистить логи
+        clearLogsBtn.addEventListener('click', clearLogs);
+
+        // Закрываем панели при клике вне их
+        document.addEventListener('click', (e) => {
+            if (!visitCounter.contains(e.target) && 
+                !visitorInfoPanel.contains(e.target) && 
+                !logsPanel.contains(e.target)) {
+                visitorInfoPanel.classList.remove('show');
+                logsPanel.classList.remove('show');
+            }
+        });
+
+        // Обработчик кнопки сброса - показывает модальное окно с паролем
+        resetVisitBtn.addEventListener('click', () => {
+            showResetPasswordModal();
+        });
+
+        // Обработчики модального окна для сброса
+        resetPasswordConfirmBtn.addEventListener('click', checkResetPassword);
+        resetPasswordCancelBtn.addEventListener('click', hideResetPasswordModal);
+        
+        // Обработчики модального окна для логов
+        logsPasswordConfirmBtn.addEventListener('click', checkLogsPassword);
+        logsPasswordCancelBtn.addEventListener('click', hideLogsPasswordModal);
+        
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (resetPasswordModal.classList.contains('show')) {
+                    hideResetPasswordModal();
+                }
+                if (logsPasswordModal.classList.contains('show')) {
+                    hideLogsPasswordModal();
+                }
+                logsPanel.classList.remove('show');
+                visitorInfoPanel.classList.remove('show');
+            }
+        });
+
+        // Закрытие по клику на фон
+        resetPasswordModal.addEventListener('click', (e) => {
+            if (e.target === resetPasswordModal) {
+                hideResetPasswordModal();
+            }
+        });
+
+        logsPasswordModal.addEventListener('click', (e) => {
+            if (e.target === logsPasswordModal) {
+                hideLogsPasswordModal();
+            }
+        });
+
+        // Enter в полях пароля
+        resetPasswordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkResetPassword();
+            }
+        });
+
+        logsPasswordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkLogsPassword();
+            }
+        });
+
+        // --- ПЕРЕКЛЮЧЕНИЕ МЕЖДУ РЕЖИМАМИ ---
+        simpleModeRadio.addEventListener('change', function() {
+            if (this.checked) {
+                simpleModeContainer.classList.remove('hidden-mode');
+                advancedModeContainer.classList.add('hidden-mode');
+            }
+        });
+
+        advancedModeRadio.addEventListener('change', function() {
+            if (this.checked) {
+                advancedModeContainer.classList.remove('hidden-mode');
+                simpleModeContainer.classList.add('hidden-mode');
+            }
+        });
+
+        // --- ФУНКЦИИ ДЛЯ ПРОСТОГО РЕЖИМА ---
+        function addSimpleFunctionField() {
+            simpleFunctionCounter++;
+            
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'function-input-group';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = `Название функции ${simpleFunctionCounter}`;
+            input.className = 'simple-function-name-input';
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Удалить';
+            removeButton.addEventListener('click', () => {
+                inputGroup.remove();
+            });
+
+            inputGroup.appendChild(input);
+            inputGroup.appendChild(removeButton);
+            simpleFunctionContainer.appendChild(inputGroup);
+        }
+
+        // --- ФУНКЦИИ ДЛЯ ПРОДВИНУТОГО РЕЖИМА ---
+        function createSection(sectionName = '') {
+            sectionCounter++;
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section-container';
+
+            const sectionHeader = document.createElement('div');
+            sectionHeader.className = 'section-header';
+
+            const sectionNameInput = document.createElement('input');
+            sectionNameInput.type = 'text';
+            sectionNameInput.className = 'section-name-input';
+            sectionNameInput.placeholder = `Название раздела ${sectionCounter}`;
+            sectionNameInput.value = sectionName || `Раздел ${sectionCounter}`;
+
+            const removeSectionBtn = document.createElement('button');
+            removeSectionBtn.className = 'remove-section-button';
+            removeSectionBtn.textContent = 'Удалить раздел';
+            removeSectionBtn.onclick = function() {
+                if (confirm('Удалить этот раздел и все его функции?')) {
+                    sectionDiv.remove();
+                }
+            };
+
+            sectionHeader.appendChild(sectionNameInput);
+            sectionHeader.appendChild(removeSectionBtn);
+
+            const functionsContainer = document.createElement('div');
+            functionsContainer.className = 'functions-in-section';
+
+            const addFunctionBtn = document.createElement('button');
+            addFunctionBtn.className = 'add-function-button';
+            addFunctionBtn.textContent = '➕ ДОБАВИТЬ ФУНКЦИЮ В РАЗДЕЛ';
+            addFunctionBtn.onclick = function() {
+                addFunctionToSection(functionsContainer);
+            };
+
+            sectionDiv.appendChild(sectionHeader);
+            sectionDiv.appendChild(functionsContainer);
+            sectionDiv.appendChild(addFunctionBtn);
+
+            return sectionDiv;
+        }
+
+        function addFunctionToSection(container) {
+            globalFunctionCounter++;
+            
+            const functionGroup = document.createElement('div');
+            functionGroup.className = 'function-input-group';
+
+            const functionInput = document.createElement('input');
+            functionInput.type = 'text';
+            functionInput.className = 'section-function-name-input';
+            functionInput.placeholder = `Название функции ${globalFunctionCounter}`;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Удалить';
+            removeBtn.onclick = function() {
+                functionGroup.remove();
+            };
+
+            functionGroup.appendChild(functionInput);
+            functionGroup.appendChild(removeBtn);
+            container.appendChild(functionGroup);
+        }
+
+        // --- ФУНКЦИЯ ГЕНЕРАЦИИ ---
+        function generateLuaScript() {
+            if (simpleModeRadio.checked) {
+                generateSimpleScript();
+            } else {
+                generateAdvancedScript();
+            }
+        }
+
+        function generateSimpleScript() {
+            let luaFunctionsCode = '';
+            const functionNames = [];
+
+            const inputs = document.querySelectorAll('.simple-function-name-input');
+            inputs.forEach(input => {
+                let funcName = input.value.trim();
+
+                funcName = funcName.replace(/[^a-zA-Z0-9_]/g, '');
+                if (funcName.match(/^[0-9]/)) {
+                    funcName = 'func_' + funcName;
+                }
+                if (funcName === '' || funcName.length < 2) {
+                    funcName = 'default_func_' + (functionNames.length + 1);
+                }
+
+                if (funcName) {
+                    if (!functionNames.includes(funcName)) {
+                        functionNames.push(funcName);
+                        luaFunctionsCode += `function ${funcName}()
+    gg.alert('Удалите этот Алерт и вставьте свой код для функции "${funcName}"')
+end
+
+`;
+                    } else {
+                        let uniqueFuncName = funcName;
+                        let counter = 1;
+                        while (functionNames.includes(uniqueFuncName)) {
+                            uniqueFuncName = funcName + '_' + counter;
+                            counter++;
+                        }
+                        functionNames.push(uniqueFuncName);
+                        luaFunctionsCode += `function ${uniqueFuncName}()
+    gg.alert('Удалите этот Алерт и вставьте свой код для функции "${uniqueFuncName}" (было "${funcName}")')
+end
+
+`;
+                    }
+                }
+            });
+
+            let menuChoices = '';
+            let menuIfs = '';
+
+            functionNames.forEach((name, index) => {
+                menuChoices += `        "${name}",\n`;
+                menuIfs += `    if mine == ${index + 1} then ${name}() end\n`;
+            });
+
+            if (menuChoices.length > 0) {
+                menuChoices = menuChoices.slice(0, -2);
+            } else {
+                menuChoices = '        "Нет функций"';
+            }
+
+            const luaTemplate = `-- Генератор Lua-скриптов (Простой режим)
+-- Сгенерировано ${new Date().toLocaleString()}
+-- Автор: ZAKAZY
+-- Посещений генератора: ${visitorCountEl.textContent}
+
+gg.alert('Script by zakazy')
+gg.sleep(100)
+
+ByScript = 1
+
+function menu()
+    ByScript = 0
+    local mine = gg.choice({
+${menuChoices}
+    }, nil, "Меню [ByScript]")
+
+${menuIfs}
+end
+
+-- Функции
+${luaFunctionsCode}
+
+-- Основной цикл
+while true do
+    if gg.isVisible(true) then
+        ByScript = 1
+        gg.setVisible(false)
+    end
+    if ByScript == 1 then menu() end
+    gg.sleep(200)
+end
+`;
+
+            generatedCodeOutput.textContent = luaTemplate;
+            copyButton.style.display = 'block';
+        }
+
+        function generateAdvancedScript() {
+            const sections = document.querySelectorAll('.section-container');
+            let mainMenuChoices = '';
+            let sectionHandlers = '';
+            let allFunctions = '';
+            let menuIfs = '';
+
+            sections.forEach((section, sectionIndex) => {
+                const sectionName = section.querySelector('.section-name-input').value.trim() || `Раздел ${sectionIndex + 1}`;
+                const functionsInSection = section.querySelectorAll('.section-function-name-input');
+                
+                const sectionHandlerName = 'show_section_' + (sectionIndex + 1) + '_menu';
+                
+                mainMenuChoices += `        "📁 ${sectionName}",\n`;
+                
+                let sectionFunctions = [];
+                let sectionChoices = '';
+                let sectionIfs = '';
+
+                functionsInSection.forEach((funcInput, funcIndex) => {
+                    let funcName = funcInput.value.trim();
+                    
+                    funcName = funcName.replace(/[^a-zA-Z0-9_]/g, '');
+                    if (funcName.match(/^[0-9]/)) {
+                        funcName = 'func_' + funcName;
+                    }
+                    
+                    if (funcName === '' || funcName.length < 2) {
+                        funcName = 'section' + (sectionIndex + 1) + '_func_' + (funcIndex + 1);
+                    }
+
+                    let uniqueFuncName = funcName;
+                    let counter = 1;
+                    while (sectionFunctions.includes(uniqueFuncName)) {
+                        uniqueFuncName = funcName + '_' + counter;
+                        counter++;
+                    }
+                    sectionFunctions.push(uniqueFuncName);
+
+                    sectionChoices += `            "${uniqueFuncName}",\n`;
+                    sectionIfs += `            if choice == ${funcIndex + 1} then ${uniqueFuncName}() end\n`;
+                    
+                    allFunctions += `function ${uniqueFuncName}()
+    gg.alert('Функция "${uniqueFuncName}" в разделе "${sectionName}"')
+    -- Твой код здесь
+end
+
+`;
+                });
+
+                if (sectionFunctions.length > 0) {
+                    sectionHandlers += `function ${sectionHandlerName}()
+    local choice = gg.choice({
+${sectionChoices}
+    }, nil, "📁 ${sectionName}")
+    
+    if choice == nil then
+        menu()
+        return
+    end
+    
+${sectionIfs}
+    ${sectionHandlerName}()
+end
+
+`;
+                } else {
+                    sectionHandlers += `function ${sectionHandlerName}()
+    gg.alert('В разделе "${sectionName}" нет функций')
+    menu()
+end
+
+`;
+                }
+
+                menuIfs += `    if mainChoice == ${sectionIndex + 1} then ${sectionHandlerName}() end\n`;
+            });
+
+            const luaTemplate = `-- Генератор Lua-скриптов с разделами
+-- Сгенерировано ${new Date().toLocaleString()}
+-- Автор: ZAKAZY
+-- Посещений генератора: ${visitorCountEl.textContent}
+
+gg.alert('Script by zakazy')
+gg.sleep(100)
+
+ByScript = 1
+
+function menu()
+    ByScript = 0
+    local mainChoice = gg.choice({
+${mainMenuChoices}
+        "❌ Выход"
+    }, nil, "Главное меню [ByScript]")
+    
+    if mainChoice == nil or mainChoice == ${sections.length + 1} then
+        return
+    end
+    
+${menuIfs}
+end
+
+-- Обработчики разделов
+${sectionHandlers}
+
+-- Функции
+${allFunctions}
+
+-- Основной цикл
+while true do
+    if gg.isVisible(true) then
+        ByScript = 1
+        gg.setVisible(false)
+    end
+    if ByScript == 1 then menu() end
+    gg.sleep(200)
+end
+`;
+
+            generatedCodeOutput.textContent = luaTemplate;
+            copyButton.style.display = 'block';
+        }
+
+        // --- Функция копирования ---
+        function copyCodeToClipboard() {
+            const textarea = document.createElement('textarea');
+            textarea.value = generatedCodeOutput.textContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const originalButtonText = copyButton.textContent;
+            copyButton.textContent = '✓ СКОПИРОВАНО!';
+            setTimeout(() => {
+                copyButton.textContent = originalButtonText;
+            }, 2000);
+        }
+
+        // --- ИНИЦИАЛИЗАЦИЯ ---
+        // Запускаем счётчик посещений
+        initVisitCounter();
+
+        // Добавляем начальные поля для простого режима
+        for (let i = 0; i < 3; i++) {
+            addSimpleFunctionField();
+        }
+
+        // Добавляем начальный раздел для продвинутого режима
+        sectionsContainer.appendChild(createSection('Основные функции'));
+
+        // Обновляем логи при загрузке
+        updateLogsDisplay();
+
+        // --- ОБРАБОТЧИКИ СОБЫТИЙ ---
+        simpleAddButton.addEventListener('click', addSimpleFunctionField);
+        addSectionButton.addEventListener('click', () => {
+            sectionsContainer.appendChild(createSection());
+        });
+        
+        generateButton.addEventListener('click', generateLuaScript);
+        copyButton.addEventListener('click', copyCodeToClipboard);
+
+    </script>
+</body>
+
+</html>
